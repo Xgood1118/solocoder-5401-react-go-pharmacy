@@ -210,10 +210,11 @@ export default function DrugDetail() {
                     <td>{rec.sensor_id || '-'}</td>
                     <td>
                       {rec.temp < 2 || rec.temp > 8 ? (
-                      <span className="tag tag-red">异常</span>
-                    ) : (
-                      <span className="tag tag-green">正常</span>
-                    )}
+                        <span className="tag tag-red">异常</span>
+                      ) : (
+                        <span className="tag tag-green">正常</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
                 {tempRecords.length === 0 && (

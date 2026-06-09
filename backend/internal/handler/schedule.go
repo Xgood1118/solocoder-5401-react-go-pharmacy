@@ -226,6 +226,7 @@ func (h *ScheduleHandler) ConfirmSwap(c *gin.Context) {
 
 	now := time.Now()
 	swap.Status = model.SwapConfirmed
+	swap.ConfirmedAt = now
 	swap.ExpiresAt = now.Add(24 * time.Hour)
 
 	h.store.UpdateSwapRequest(swap)
@@ -278,6 +279,7 @@ func (h *ScheduleHandler) ApproveSwap(c *gin.Context) {
 
 	now := time.Now()
 	swap.Status = model.SwapApproved
+	swap.ApprovedAt = now
 	swap.RejectReason = ""
 
 	h.store.UpdateSwapRequest(swap)
@@ -325,6 +327,7 @@ func (h *ScheduleHandler) RejectSwap(c *gin.Context) {
 
 	now := time.Now()
 	swap.Status = model.SwapRejected
+	swap.RejectedAt = now
 	swap.RejectReason = req.Reason
 
 	h.store.UpdateSwapRequest(swap)

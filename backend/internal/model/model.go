@@ -194,19 +194,22 @@ const (
 )
 
 type SwapRequest struct {
-	ID          string    `json:"id"`
-	ShiftID     string    `json:"shift_id"`
-	ShiftDate   string    `json:"shift_date"`
-	ShiftType   ShiftType `json:"shift_type"`
-	RequesterID string    `json:"requester_id"`
-	RequesterName string  `json:"requester_name"`
-	TargetStaffID string   `json:"target_staff_id"`
-	TargetStaffName string `json:"target_staff_name"`
-	Status      SwapStatus `json:"status"`
-	Reason      string    `json:"reason,omitempty"`
-	RejectReason string   `json:"reject_reason,omitempty"`
-	CreatedAt   time.Time `json:"created_at"`
-	ExpiresAt   time.Time `json:"expires_at"`
+	ID              string     `json:"id"`
+	ShiftID         string     `json:"shift_id"`
+	ShiftDate       string     `json:"shift_date"`
+	ShiftType       ShiftType  `json:"shift_type"`
+	RequesterID     string     `json:"requester_id"`
+	RequesterName   string     `json:"requester_name"`
+	TargetStaffID   string     `json:"target_staff_id"`
+	TargetStaffName string     `json:"target_staff_name"`
+	Status          SwapStatus `json:"status"`
+	Reason          string     `json:"reason,omitempty"`
+	RejectReason    string     `json:"reject_reason,omitempty"`
+	CreatedAt       time.Time  `json:"created_at"`
+	ConfirmedAt     time.Time  `json:"confirmed_at,omitempty"`
+	ApprovedAt      time.Time  `json:"approved_at,omitempty"`
+	RejectedAt      time.Time  `json:"rejected_at,omitempty"`
+	ExpiresAt       time.Time  `json:"expires_at"`
 }
 
 type TransferStatus string
