@@ -270,9 +270,6 @@ func (h *ScheduleHandler) ApproveSwap(c *gin.Context) {
 		return
 	}
 
-	origStaff := shift.StaffID
-	origStaffName := shift.StaffName
-
 	shift.StaffID = swap.TargetStaffID
 	shift.StaffName = swap.TargetStaffName
 	h.store.UpdateShift(shift)
@@ -283,9 +280,6 @@ func (h *ScheduleHandler) ApproveSwap(c *gin.Context) {
 	swap.RejectReason = ""
 
 	h.store.UpdateSwapRequest(swap)
-
-	_ = origStaff
-	_ = origStaffName
 
 	c.JSON(http.StatusOK, swap)
 }

@@ -88,9 +88,6 @@ func (h *RxHandler) CreateRx(c *gin.Context) {
 			return
 		}
 
-		if drug.IsPrescription {
-		}
-
 		amount := drug.SalePrice * float64(item.Quantity)
 		totalAmount += amount
 

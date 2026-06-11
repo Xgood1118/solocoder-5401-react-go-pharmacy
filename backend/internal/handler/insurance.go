@@ -116,6 +116,8 @@ func (h *InsuranceHandler) Reconcile(c *gin.Context) {
 		h.generateDiscrepancies(settlement)
 	}
 
+	h.store.UpdateSettlement(settlement)
+
 	c.JSON(http.StatusOK, settlement)
 }
 

@@ -62,11 +62,12 @@ func (h *StaffHandler) Login(c *gin.Context) {
 	passwordExpiresIn := int(time.Until(staff.PasswordExpiresAt).Hours() / 24)
 	passwordWarning := passwordExpiresIn <= 7
 
-	c.JSON(http.StatusOK, LoginResponse{
-		Token: token,
-		Staff: staff,
+	c.JSON(http.StatusOK, gin.H{
+		"token":               token,
+		"staff":               staff,
+		"password_expires_in": passwordExpiresIn,
+		"password_warning":    passwordWarning,
 	})
-	_ = passwordWarning
 }
 
 func (h *StaffHandler) GetProfile(c *gin.Context) {

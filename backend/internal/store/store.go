@@ -135,15 +135,7 @@ func (s *MemoryStore) GetDrug(id string) (*model.Drug, bool) {
 func (s *MemoryStore) ListDrugs() []*model.Drug {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	result := make([]*model.Drug, 0, len(s.Drugs))
-	for _, d := range s.Drugs {
-		d.TotalStock = s.calcTotalStock(d.ID)
-		result = append(result, d)
-	}
-	sort.Slice(result, func(i, j int) bool {
-		return result[i].ProductName < result[j].ProductName
-	})
-	return result
+	return s.listDrugsLocked()
 }
 
 func (s *MemoryStore) SearchDrugs(keyword string) []*model.Drug {
@@ -151,7 +143,7 @@ func (s *MemoryStore) SearchDrugs(keyword string) []*model.Drug {
 	defer s.mu.RUnlock()
 	keyword = strings.ToLower(strings.TrimSpace(keyword))
 	if keyword == "" {
-		return s.ListDrugs()
+		return s.listDrugsLocked()
 	}
 
 	found := make(map[string]bool)
@@ -181,6 +173,18 @@ func (s *MemoryStore) SearchDrugs(keyword string) []*model.Drug {
 		}
 	}
 
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].ProductName < result[j].ProductName
+	})
+	return result
+}
+
+func (s *MemoryStore) listDrugsLocked() []*model.Drug {
+	result := make([]*model.Drug, 0, len(s.Drugs))
+	for _, d := range s.Drugs {
+		d.TotalStock = s.calcTotalStock(d.ID)
+		result = append(result, d)
+	}
 	sort.Slice(result, func(i, j int) bool {
 		return result[i].ProductName < result[j].ProductName
 	})
@@ -385,6 +389,12 @@ func (s *MemoryStore) UpdateRx(rx *model.Rx) {
 }
 
 func (s *MemoryStore) AddSettlement(settlement *model.InsuranceSettlement) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.Settlements[settlement.ID] = settlement
+}
+
+func (s *MemoryStore) UpdateSettlement(settlement *model.InsuranceSettlement) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.Settlements[settlement.ID] = settlement
